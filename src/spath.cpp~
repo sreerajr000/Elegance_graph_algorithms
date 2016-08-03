@@ -1,0 +1,134 @@
+#include "spath.h"
+//Find Shortest Path weighted graph
+void Spath::shortestPathWeighted(int source,int destination){
+	if(source==destination)
+	cout<<source;
+    else if(vertices[destination-1].parent==NULL){
+	cout<<"No Path from "<<source<<" to "<<destination<<" exists\n";
+    }
+    else{
+	int new_dest=vertices[destination-1].parent->key+1;
+	shortestPathWeighted(source,new_dest);
+	if(destination<=no_of_vertices)
+		cout<<"->"<<destination;
+    }
+}
+//Make adjacency list from raw list
+void Spath::makeAdjacencyList(){
+	vertices.clear();
+	adjacencyList.clear();
+	for(int i=0;i<undirected.size();i++){
+		Vertex data(i);
+		vertices.push_back(data);
+	}
+	adjacencyList.resize(vertices.size());
+	for(int i=0;i<vertices.size();i++){
+		for(int j=0;j<undirected[i].size();j++){
+			adjacencyList[i].push_back(&(vertices[undirected[i][j]]));
+		}
+	}
+	for(auto x:adjacencyList){
+		for(auto y:x){
+			cout<<y->key+1<<" ";
+		}
+		cout<<endl;
+	}
+	/*int source,dest;
+	cout<<"Enter source : ";
+	cin>>source;
+	cout<<"Enter destination : ";
+	cin>>dest;
+	bfs(source);
+	shortestPathWeighted(source,dest);*/
+}
+
+//Add dummy nodes
+void Spath::convert(){
+			newlist=List;
+			int size=no_of_vertices;
+			newlist.resize(size+sum);
+			//cout<<newlist.size()<<endl;
+			int t=0,p=0;
+			cout<<endl;
+			for(int i=0;i<List.size();i++){
+				for(int j=0;j<List[i].size();j++){
+					int wt=weight[i][List[i][j]];
+					int temp=newlist[i][j];
+					newlist[i][j]=size+(t++);
+					for(int k=0;k<wt-1;k++,p++){
+						newlist[size+(p)].push_back(size+(t++));//Add dummy node
+					}
+					newlist[size+(p++)].push_back(temp);
+				}
+			}
+			//displayNew();
+		}
+		//Convert directed to undirected
+		void Spath::convertToUndirected(){
+			undirected.resize(newlist.size());
+			for(int i=0;i<newlist.size();i++){
+				for(int j=0;j<newlist[i].size();j++){
+					int k=newlist[i][j];
+					undirected[i].push_back(k);
+					undirected[k].push_back(i);
+				}
+			}
+			//displayUn();
+			for(auto x:undirected){
+				for(auto y:x)
+					cout<<y<<" ";
+				cout<<endl;
+			}
+		}
+//Longest Path in a tree
+void Spath::longestPath(){
+	bfs(1);	//First bfs
+	//Farthest node
+	int max=0,max_distance=vertices[0].distance;
+	for(int i=1;i<no_of_vertices;i++){
+		if(vertices[i].distance>max_distance){
+			max=i;
+			max_distance=vertices[i].distance;
+		}
+	}
+	bfs(max+1);	//Second BFS
+	int source=0;
+	max_distance=vertices[0].distance;
+	for(int i=1;i<no_of_vertices;i++){
+		if(vertices[i].distance>max_distance){
+			source=i;
+			max_distance=vertices[i].distance;
+		}
+	}
+	cout<<source+1<<"->"<<max+1<<endl;
+	shortestPath(max+1,source+1);	//Longest Path
+}
+
+//Shortest Path Fixed Vertex (Source->Destination) from breadth first tree
+void Spath::shortestPath(int source,int destination){
+	shortestPathLength++;
+    if(source==destination)
+	cout<<source;
+    else if(vertices[destination-1].parent==NULL){
+	cout<<"No Path from "<<source<<" to "<<destination<<" exists\n";
+    }
+    else{
+	int new_dest=vertices[destination-1].parent->key+1;
+	shortestPath(source,new_dest);
+	cout<<"->"<<destination;
+    }
+
+}
+
+//Simply Display all pair shortest path
+void Spath::allPairShortestPath(){
+	cout<<"All pair Shortest Path\n";
+	for(int source=1;source<=vertices.size();source++){
+		bfs(source);	//source vertex
+		for(int dest=1;dest<=vertices.size();dest++){
+			printf("(%d,%d) : ",source,dest);
+			shortestPath(source,dest);
+			cout<<endl;
+		}
+	}	
+}

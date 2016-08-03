@@ -1,0 +1,58 @@
+#include "bfs.h"
+//Perform BFS
+//Function to print parents of vertices in the BFS tree
+void BFS::printParent(){
+	bfs(1);
+	cout<<"Size : " << vertices.size()<<endl;
+	for(auto x:vertices){
+		if(x.parent!=NULL)
+			cout<<x.key+1<<"->"<<x.parent->key+1<<" ";
+	}
+	cout<<endl;
+}
+// Bfs from source vertex
+void BFS::bfs(int source){
+	bfs_op.clear();	//clear existing bfs o/p
+	nontree.resize(vertices.size(),vector<bool>(vertices.size(),true));	//non tree edges
+	bfs_op.push_back(source);
+	//initialisation
+	for(size_t index=0;index<vertices.size();index++){
+		vertices[index].color=WHITE;
+		vertices[index].distance=INT_MAX;
+		vertices[index].parent=NULL;
+	}
+    vertices[source-1].color=GRAY;
+    vertices[source-1].distance=0;
+    vertices[source-1].parent=NULL;
+    queue<Vertex *> Q;	//Q for BFS
+   
+    Q.push(&vertices[source-1]);
+  
+    while(!Q.empty()){
+	Vertex *u=Q.front();
+	Q.pop();
+	for(size_t index=0;index<adjacencyList[u->key].size();index++){
+	    if(adjacencyList[u->key][index]->color==WHITE){		//Unvisited
+	    	//cout<<"Tree edge\n";
+	    	//cout<<adjacencyList[u->key][index]->key+1<<" "<<u->key+1<<endl;;
+	    	bfs_op.push_back(adjacencyList[u->key][index]->key+1);
+		adjacencyList[u->key][index]->color=GRAY;	//Set visited
+		adjacencyList[u->key][index]->distance=u->distance+1;	//Set distance
+		nontree[adjacencyList[u->key][index]->key][u->key]=false;	//not a non tree edge
+		adjacencyList[u->key][index]->parent=u;		//Set parent
+		//adjacencyList[u.key][index]->parent=		//Parent address retrieval failed......
+		Q.push(adjacencyList[u->key][index]);
+	    }
+	}
+	u->color=BLACK;	//Set all neighbours visited
+    }
+  
+}
+//print bfs o/p
+void BFS::printBFS(){
+	cout<<"BFS : "; 
+	for(auto x:bfs_op)
+		cout<<x<<" ";
+	cout<<endl;
+}
+

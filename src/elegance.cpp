@@ -1,0 +1,145 @@
+#include "elegance.h"
+
+void Elegance::menu(){
+	cout<<"ELEGANCE: ELEmentary Graph Algorithms aNd its role in Computer Engineering\n";
+	cout<<"\t\t1.Read Graph \n\
+		2.Print Adjacency List\n\
+		3.Run BFS\n\
+		4.Run DFS\n\
+		5.Test Cycle\n\
+		6.Test Tree\n\
+		7.Test Bipartite\n\
+		8.Shortest Path (Source,Destination)\n\
+		9.All Pair Shortest Path\n\
+		10.Articulation Points\n\
+		11.Bridges\n\
+		12.Biconnected Components\n\
+		13.Strongly Connected Components\n\
+		14.Shortest Path (Weighted Graph)\n\
+		15.Test Even Cycle\n\
+		16.Longest Path (Tree)\n\
+		17.Ramsey\n\
+		18.Course\n\
+		0.Exit\n\
+		Enter the option : ";
+		cin>>opt;
+}
+
+int Elegance :: frame(){
+	int source,destination;
+	do{
+		menu();
+		switch(opt){
+			case 1:
+				cout<<"Read Adjacency List\n";
+				readAdjList();
+				break;
+			case 2:
+				cout<<"Print Adjacent List\n";
+				printAdjList();
+				break;
+			case 3:
+				cout<<"BFS output\n";
+				cout<<"Enter Start Vertex : ";
+				cin>>source;
+				bfs(source);
+				printBFS();
+				break;
+			case 4:
+				cout<<"DFS output\n";
+				dfs();
+				printDFS();
+				break;
+			case 5:
+				cout<<"Cycle : ";
+				isCyclic(true)?cout<<"Yes\n":cout<<"No\n";
+				break;
+			case 6:
+				cout<<"Tree : ";
+				isTree()?cout<<"Yes\n":cout<<"No\n";
+				break;
+			case 7:
+				cout<<"Bipartite : ";
+				isBipartite(true)?cout<<"Yes\n":cout<<"No\n";
+				break;
+			case 8:
+				cout<<"Shortest Path (source,destination)\n";
+				cout<<"Enter source vertex : ";
+				cin>>source;
+				cout<<"Enter destination vertex : ";
+				cin>>destination;
+				bfs(source);
+				shortestPath(source,destination);
+				cout<<endl;
+				break;
+			case 9:
+				cout<<"All Pair Shortest Path\n";
+				allPairShortestPath();
+				break;
+			case 10:
+				cout<<"Display Articulation Points\n";
+				//printLow();
+				
+				getArticulationPoints();
+				break;
+			case 11:
+				cout<<"Display Bridges\n";
+				getBridges();
+				break;
+			case 12:
+				cout<<"Display Biconnected Components\n";
+				bcc();
+				break;
+			case 13:
+				cout<<"Strongly Connected Components \n";
+				getSCC();
+				break;
+			case 14:
+				cout<<"Shortest Path Weighted Graph (Source,Destination)\n";
+				convert();
+				if(!directed)
+					convertToUndirected();
+				else
+					undirected=newlist;
+				makeAdjacencyList();
+				cout<<"Enter source vertex : ";
+				cin>>source;
+				cout<<"Enter destination vertex : ";
+				cin>>destination;
+				bfs(source);
+				shortestPathWeighted(source,destination);
+				cout<<endl;
+				break;
+			case 15:
+				cout<<"Even Cycle : ";
+				isEvenCyclic()?cout<<"Yes\n":cout<<"No\n";
+				break;
+			case 16:
+				cout<<"Longest Path in a tree\n";
+				longestPath();
+				break;
+			case 17:
+				cout<<"Testing Ramsey Theory : ";
+				ramsey()?cout<<"Yes\n":cout<<"No\n";
+				break;
+			case 18:
+				cout<<"Course PreRequisite\n";
+				cout<<"No of Semesters Required : "<<top_sort()<<endl;
+				break;
+			case 0:
+				return 0;
+				
+			default:
+				cout<<"Invalid Option\n";
+		}
+			
+		cout<<"Do you want to continue (1/0) : ";
+		cin>>ch;
+	}while(ch!=0);
+}
+
+int main(void){
+	Elegance obj;
+	obj.frame();
+	return 0;
+}

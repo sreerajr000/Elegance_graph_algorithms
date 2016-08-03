@@ -1,0 +1,28 @@
+#include "vertex.h"
+#include "edge.h"
+#include<vector>
+#include<list>
+
+using namespace std;
+
+class Graph{
+	private:
+		void readDirected();
+		void readUndirected();
+		void readDirected(bool);//With weights
+		void readUndirected(bool);
+		
+	protected:
+		bool cyclic,directed,bipartite,connected,weighted;
+		vector<vector<Vertex*>>adjacencyList;
+		vector<Vertex> vertices;
+		size_t no_of_vertices,no_of_edges;
+		int sum;
+		vector<vector<int>> weight;
+		vector<vector<int>> List;
+		vector<int> indegree;
+	public:
+		void readAdjList();
+		void printAdjList();
+};
+#endif

@@ -1,0 +1,6 @@
+#include "tree.h"
+
+bool Tree::isTree(){
+	return (!isCyclic(1))&&isConnected();
+}
+

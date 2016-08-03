@@ -1,0 +1,12 @@
+#ifndef RAMSEY_H
+#define RAMSEY_H
+#include "cycle.h"
+class Ramsey : public Cyclic{
+	private:
+	
+	protected:
+	
+	public:
+		bool ramsey();
+};
+#endif

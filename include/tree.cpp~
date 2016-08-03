@@ -1,0 +1,4 @@
+bool Tree::isTree(){
+	return (!isCyclic(1))&&isConnected();
+}
+
